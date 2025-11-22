@@ -1,0 +1,61 @@
+/* === Sidebar ogólnie === */
+
+[data-testid="stSidebar"] {
+    background-color: #111217;
+    padding-top: 1rem;
+}
+
+/* Tytuł nawigacji */
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-weight: 700;
+}
+
+/* Kontener radia */
+
+[data-testid="stSidebar"] [data-testid="stRadio"] > div {
+    gap: 0.4rem;
+}
+
+/* Każda opcja radia */
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.35rem 0.6rem;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.05s ease;
+}
+
+/* Ukrycie „kółek” radia (Streamlitowe bubble) */
+
+[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] > label > div:first-child {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+/* Hover na opcji */
+
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+}
+
+/* Aktywna opcja – ładne podświetlenie + pasek po lewej */
+
+[data-testid="stSidebar"] [data-testid="stRadio"] div[aria-checked="true"] label {
+    background: linear-gradient(90deg, #ff4b4b22, transparent);
+    border-left: 4px solid #ff4b4b;
+    color: #ffffff !important;
+    transform: translateX(2px);
+}
+
+/* Drobne wygładzenie tekstu w sidebarze */
+
+[data-testid="stSidebar"] {
+    -webkit-font-smoothing: antialiased;
+}
