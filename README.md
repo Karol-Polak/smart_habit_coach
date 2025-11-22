@@ -135,3 +135,73 @@ API dostępne pod:
 ```bash
 streamlit run frontend/app.py
 ```
+
+---
+
+# 🔧 Kluczowe elementy techniczne
+
+Poniżej znajduje się zestawienie najważniejszych elementów technicznych projektu, które pokazują architekturę i sposób działania aplikacji.
+
+---
+
+## 🗄️ 1. Baza danych (SQLite + SQLModel)
+
+- Lekka, lokalna baza SQLite wykorzystywana jako główny magazyn danych.
+- ORM oparty o **SQLModel**, łączący zalety Pydantic i SQLAlchemy.
+- Dwie kluczowe tabele:
+  - **Habit** – informacje o nawyku (nazwa, opis),
+  - **HabitLog** – dzienne logi wykonania (data, wykonano, nastrój, energia, notatka).
+- Automatyczne tworzenie tabel przy starcie backendu.
+
+---
+
+## 🌱 2. Seed danych demo
+
+- Skrypt `seed_demo.py` generuje:
+  - kilka przykładowych nawyków,
+  - 30 dni logów z realistycznie losowanymi wartościami.
+- Idealny do demonstracji funkcji i testowania UI/ML bez ręcznego wprowadzania danych.
+- Nie trenuje modeli ML automatycznie — użytkownik musi zrobić to sam w aplikacji.
+
+---
+
+## 🧹 3. Reset bazy danych
+
+- Skrypt `tools/reset_db.py` czyści zawartość bazy (pozostawiając jej strukturę).
+- Przydatny przy:
+  - testowaniu,
+  - rozpoczęciu projektu na czysto,
+  - odświeżeniu środowiska dev.
+
+---
+
+## 🔌 4. Backend (FastAPI)
+
+- Modularny backend podzielony na routery (`routers/`):
+  - CRUD nawyków,
+  - logi dzienne,
+  - statystyki,
+  - operacje Machine Learning.
+- Endpointy m.in.:
+  - `POST /habits/`, `GET /habits/`, `DELETE /habits/{id}`,
+  - `POST /habit-logs/`,
+  - `GET /habits/{id}/stats`,
+  - `POST /habits/{id}/train`,
+  - `GET /habits/{id}/predict`.
+- Obsługa błędów (404, 400, 500) i walidacja danych.
+- Automatyczna dokumentacja **Swagger UI** pod `/docs`.
+
+---
+
+## 🤖 5. Machine Learning
+
+- Osobny moduł `ml/` odpowiedzialny za:
+  - trenowanie modeli (`train_model_for_habit`),
+  - predykcję (`predict_probability_for_habit`).
+- Model ML trenowany **dla każdego nawyku osobno**.
+- Cechy:
+  - dzień tygodnia,
+  - nastrój,
+  - poziom energii.
+- Dane treningowe pochodzą z tabeli `HabitLog`.
+- Modele zapisywane jako:
